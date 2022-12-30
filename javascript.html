@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="d-flex justify-content-center">
+        <div class="col-12 col-md-4 col-xl-4">
+            <div class="card mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        1
+                    </div>
+                    <div class="card-body">
+                        <div class="form mt-2">
+                            <div class="form-group">
+                                <input id="nums" class="form-control" type="text" name="nums" placeholder='2,7,11,15'>
+                            </div>
+                            <div class="form-group mt-2">
+                                <input id="target" class="form-control" type="text" name="target" placeholder="9">
+                            </div>
+                            <div class="form-group mt-2">
+                                <button id="btncheck" class="btn btn-sm btn-primary" disabled>Check</button>
+                            </div>
+                            <div class="form-group mt-2 mb-2 text-center">
+                                <p class="h1 text-secondary font-weight" id="v"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        2
+                    </div>
+                    <div class="card-body">
+                        <div class="form mt-2">
+                            <div class="form-group">
+                                <input id="char" type="text" class="form-control" name="char" placeholder="LVIII">
+                            </div>
+                            <div class="form-group mt-2">
+                                <button id="btnconvert" class="btn btn-sm btn-success" disabled>Convert</button>
+                            </div>
+                            <div class="form-group mt-2 mb-2 text-center">
+                                <p class="h1 text-secondary font-weight" id='value'></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script>
+
+        //Tes1
+        const inputNums = document.getElementById("nums");
+        const inputTarget = document.getElementById("target");
+        const btnCheck = document.getElementById("btncheck");
+        const v = document.getElementById("v");
+
+        inputNums.addEventListener("input", validate1);
+        inputTarget.addEventListener("input", validate1);
+
+        function validate1() {
+            if (inputNums.value === "" || inputTarget.value === "") {
+                btnCheck.setAttribute("disabled", "disabled");
+            } else {
+                btnCheck.removeAttribute("disabled");
+            }
+        }
+
+        btnCheck.addEventListener("click", () => {
+            const nums = inputNums.value;
+            var ar = nums.split(',').map(function (item) {
+                return parseInt(item, 10);
+            });
+            let result = sumNums(ar, parseInt(inputTarget.value));
+            console.log(result);
+            v.textContent = '[' + result + ']';
+            alert('[' + result + ']');
+        });
+
+        function sumNums(nums, target) {
+            let index = [];
+            if (nums == null) return 'parameter null';
+            else if (target == null)
+                return 'target null'
+            else {
+                for (let i = 0; i < nums.length; i++) {
+                    for (let j = i + 1; j < nums.length; j++) {
+                        if (nums[i] + nums[j] === target) {
+                            index.push(i);
+                            index.push(j);
+                        }
+                    }
+                }
+                return index;
+            }
+
+        }
+        //End
+
+        //Tes2
+        const inputChar = document.getElementById("char");
+        const btnConvert = document.getElementById("btnconvert");
+        const value = document.getElementById("value");
+        inputChar.addEventListener("input", validate2);
+
+        function validate2() {
+            if (inputChar.value === "") {
+                btnConvert.setAttribute("disabled", "disabled");
+            } else {
+                btnConvert.removeAttribute("disabled");
+            }
+        }
+
+        btnConvert.addEventListener("click", () => {
+            let data = convertSymbolToInteger(inputChar.value);
+            console.log(data);
+            value.textContent = data;
+            alert(data);
+        });
+
+        function convertSymbolToInteger(inputSymbol) {
+            if (inputSymbol == null) return 0;
+            var value = charToInt(inputSymbol.charAt(0));
+            var previous, current;
+
+            for (var i = 1; i < inputSymbol.length; i++) {
+                current = charToInt(inputSymbol.charAt(i));
+                previous = charToInt(inputSymbol.charAt(i - 1));
+                if (current <= previous) {
+                    value += current;
+                } else {
+                    value = value - previous * 2 + current;
+                }
+            }
+            return value;
+        }
+
+        function charToInt(symbol) {
+            switch (symbol) {
+                case 'I':
+                case 'i':
+                    return 1;
+                case 'V':
+                case 'v':
+                    return 5;
+                case 'X':
+                case 'x':
+                    return 10;
+                case 'L':
+                case 'l':
+                    return 50;
+                case 'C':
+                case 'c':
+                    return 100;
+                case 'D':
+                case 'd':
+                    return 500;
+                case 'M':
+                case 'm':
+                    return 1000;
+                default:
+                    return -0;
+            }
+        }
+        //End
+
+
+    </script>
+</body>
+
+</html>
